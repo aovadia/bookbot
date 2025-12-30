@@ -6,9 +6,6 @@ def get_book_text(filename):
         book_text = f.read()
     return book_text
 
-def sort_on(dictionary):
-    return dictionary.keys()
-
 def print_dictionary(sorted_list, word_count, filename):
     print("============ BOOKBOT ============")
     print(f"Analyzing book found at {filename}")
@@ -30,7 +27,12 @@ def main():
     # Store arg
     filename = sys.argv[1]
 
-    book_text = get_book_text(filename)
+    try:
+        book_text = get_book_text(filename)
+    except (FileNotFoundError, PermissionError, IsADirectoryError, UnicodeDecodeError, OSError) as e:
+        print(f"Error reading '{filename}': {e}")
+        sys.exit(1)
+
     word_count = get_num_words(book_text)
     dictionary_of_chars = get_num_chars(book_text)
 
